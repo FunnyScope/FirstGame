@@ -47,7 +47,7 @@ public class Game extends Canvas implements Runnable {
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
-        //Why use an enum when you could use a boolean? Don't know.
+        //Why use an enum when you could use a boolean? Don't know. Doing it anyway.
         while(gameState == GameStates.Running) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;

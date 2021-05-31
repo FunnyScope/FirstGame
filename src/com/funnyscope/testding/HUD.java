@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class HUD {
 
+    private Font font = new Font("Arial", Font.PLAIN, 10);
+
     public static int health = 200;
 
     private int score = 0, level = 1;
@@ -24,6 +26,7 @@ public class HUD {
         g.setColor(Color.white);
         g.drawRect(15, 15, 200, 30);
 
+        g.setFont(font);
         g.drawString("Score: " + score, 15, 60);
         g.drawString("Level: " + level, 15, 75);
 

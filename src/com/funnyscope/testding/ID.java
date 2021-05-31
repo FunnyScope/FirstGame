@@ -4,5 +4,10 @@ public enum ID {
     Player,
     BasicEnemy,
     FastEnemy,
-    CrushingEnemy
+    CrushingEnemy,
+    FirstBoss,
+    ShootingEnemy,
+    LaserEnemy,
+    EnemyBullet,
+    Laser
 }
