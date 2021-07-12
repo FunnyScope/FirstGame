@@ -30,6 +30,8 @@ public class MouseListener extends MouseAdapter {
                         handler.addObject(new Player(30, 30, Game.WIDTH / 2 - 15, Game.HEIGHT / 2 - 15, handler, ID.Player));
                         handler.addObject(new BasicEnemy(20, 20, random.nextInt(Game.WIDTH - 200) + 100, random.nextInt(Game.HEIGHT - 200) + 100, handler, ID.BasicEnemy));
                         game.setGameState(GameStates.Running);
+                        HUD.health = 200;
+
                     }
                     if(menu.getControlButton().contains(clickPos))
                         menu.setMenuState(2);
@@ -42,9 +44,8 @@ public class MouseListener extends MouseAdapter {
                     if(menu.getBackButton().contains(clickPos))
                         menu.setMenuState(1);
                 }
-                case 4,5 -> {
-                    menu.setMenuState(1);
-                }
+                case 4,5 -> menu.setMenuState(1);
+
             }
         }
 
