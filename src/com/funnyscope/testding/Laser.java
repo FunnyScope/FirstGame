@@ -4,6 +4,7 @@ import java.awt.*;
 
 public class Laser extends GameObject {
     private int beamRemaining;
+
     public Laser(int width, int height, int x, int y, int beamRemaining, Handler handler, ID id) {
         super(width, height, x, y, handler, id);
         this.beamRemaining = beamRemaining;
@@ -13,7 +14,7 @@ public class Laser extends GameObject {
     public void tick() {
         height++;
         beamRemaining--;
-        if(beamRemaining == 0)
+        if (beamRemaining == 0)
             handler.removeObject(this);
     }
 
@@ -21,7 +22,9 @@ public class Laser extends GameObject {
     public void render(Graphics g) {
         g.setColor(Color.red);
         g.fillRect(x, y, width, height);
+        g.setColor(Color.gray);
+        g.fillRect(x + 10, y, width - 15, height - 10);
         g.setColor(Color.white);
-        g.fillRect(x + 10, y, width - 20, height);
+        g.fillRect(x + 15, y, width - 25, height - 15);
     }
 }

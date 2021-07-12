@@ -13,17 +13,17 @@ public class CrushingEnemy extends GameObject {
     @Override
     public void tick() {
 
-        if(y != 0 && !abovePlayer) {
+        if (y != 0 && !abovePlayer) {
             velX = 0;
             velY = -10;
-        } else if(!abovePlayer) {
-            for(GameObject tempObject : handler.gameObjects) {
-                if(tempObject.getId() == ID.Player) {
-                    if(tempObject.getBounds().intersects(new Rectangle(x, tempObject.getY(), width, height))) {
+        } else if (!abovePlayer) {
+            for (GameObject tempObject : handler.gameObjects) {
+                if (tempObject.getId() == ID.Player) {
+                    if (tempObject.getBounds().intersects(new Rectangle(x, tempObject.getY(), width, height))) {
                         abovePlayer = true;
                         velX = 0;
                         velY = 10;
-                    } else if(tempObject.getX() > x) {
+                    } else if (tempObject.getX() > x) {
                         velX = 10;
                         velY = 0;
                     } else {
@@ -37,7 +37,7 @@ public class CrushingEnemy extends GameObject {
 
         x = Game.clamp(x + velX, 0, Game.WIDTH - (int) (width * 1.5));
         y = Game.clamp(y + velY, 0, Game.HEIGHT - height * 2 - 9);
-        if(y + height * 2 + 9 == Game.HEIGHT)
+        if (y + height * 2 + 9 == Game.HEIGHT)
             abovePlayer = false;
     }
 

@@ -9,5 +9,7 @@ public enum ID {
     ShootingEnemy,
     LaserEnemy,
     EnemyBullet,
-    Laser
+    Laser,
+    VectorEnemy,
+    LastBoss
 }

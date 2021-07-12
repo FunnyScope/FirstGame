@@ -3,7 +3,7 @@ package com.funnyscope.testding;
 import java.awt.*;
 
 public class ShootingEnemy extends GameObject {
-    private boolean xZero;
+    private final boolean xZero;
     private boolean ammunition = false;
     private int reloading = 0;
 
@@ -17,7 +17,7 @@ public class ShootingEnemy extends GameObject {
 
     private void shoot() {
 
-        if(xZero) {
+        if (xZero) {
             handler.addObject(new EnemyBullet(10, 10, x + 10, y + 10, 10, handler, ID.EnemyBullet));
         } else {
             handler.addObject(new EnemyBullet(10, 10, x + 10, y + 10, -10, handler, ID.EnemyBullet));
@@ -28,16 +28,16 @@ public class ShootingEnemy extends GameObject {
     @Override
     public void tick() {
         reloading++;
-        if(reloading == 15) {
+        if (reloading == 15) {
             reloading = 0;
             ammunition = true;
         }
 
-        if(y <= 0 || y >= Game.HEIGHT - height * 2 - 9)
+        if (y <= 0 || y >= Game.HEIGHT - height * 2 - 9)
             velY *= -1;
 
-        for(GameObject tempObject : handler.gameObjects) {
-            if(tempObject.getId() == ID.Player && tempObject.getBounds().intersects(new Rectangle(tempObject.getX(), y, width, height)) && ammunition) {
+        for (GameObject tempObject : handler.gameObjects) {
+            if (tempObject.getId() == ID.Player && tempObject.getBounds().intersects(new Rectangle(tempObject.getX(), y, width, height)) && ammunition) {
                 shoot();
                 ammunition = false;
                 break;

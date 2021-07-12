@@ -12,9 +12,9 @@ public class EnemyBullet extends GameObject {
 
     @Override
     public void tick() {
-        if(x <= 0 || x >= Game.WIDTH - (int) (width * 1.5))
+        if (x <= 0 || x >= Game.WIDTH - (int) (width * 1.5))
             handler.removeObject(this);
-        if(y <= 0 || y >= Game.HEIGHT - height * 2 - 9)
+        if (y <= 0 || y >= Game.HEIGHT - height * 2 - 9)
             handler.removeObject(this);
 
         x = Game.clamp(x + velX, 0, Game.WIDTH - (int) (width * 1.5));

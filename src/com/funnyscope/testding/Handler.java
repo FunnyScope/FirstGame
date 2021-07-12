@@ -1,14 +1,14 @@
 package com.funnyscope.testding;
 
-import java.awt.*;
 import java.util.LinkedList;
+import java.awt.*;
 
 public class Handler {
 
     public LinkedList<GameObject> gameObjects = new LinkedList<GameObject>();
 
     public void tick() {
-        for(int i = 0; i < gameObjects.size(); i++) {
+        for (int i = 0; i < gameObjects.size(); i++) {
             GameObject tempObject = gameObjects.get(i);
             tempObject.tick();
         }
@@ -20,7 +20,7 @@ public class Handler {
         the ConcurrentModificationException. I try to use foreach loops when possible, but sometimes I can't.
         I should probably use the CopyOnWriteArrayList, and I very well might.
         */
-        for(int i = 0; i < gameObjects.size(); i++) {
+        for (int i = 0; i < gameObjects.size(); i++) {
             GameObject tempObject = gameObjects.get(i);
             tempObject.render(g);
         }

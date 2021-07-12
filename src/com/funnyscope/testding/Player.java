@@ -26,16 +26,17 @@ public class Player extends GameObject {
     }
 
     private void collision() {
-        for(int i = 0; i < handler.gameObjects.size(); i++) {
+        for (int i = 0; i < handler.gameObjects.size(); i++) {
             GameObject tempObject = handler.gameObjects.get(i);
             //collision code
             if (getBounds().intersects(tempObject.getBounds()) && tempObject.getId() != ID.Player) {
                 switch (tempObject.getId()) {
                     case EnemyBullet -> {
-                        HUD.health -= 15;
+                        HUD.health -= 5;
                         handler.removeObject(tempObject);
                     }
                     case Laser -> HUD.health -= 3;
+                    case LastBoss -> HUD.health -= 2;
                     default -> HUD.health--;
                 }
             }

@@ -4,18 +4,16 @@ import java.awt.*;
 
 public class HUD {
 
-    private Font font = new Font("Arial", Font.PLAIN, 10);
+    private final Font font = new Font("Arial", Font.PLAIN, 10);
 
     public static int health = 200;
 
     private int score = 0, level = 1;
 
 
-
     public void tick() {
         health = Game.clamp(health, 0, 200);
         score++;
-
     }
 
     public void render(Graphics g) {
@@ -47,4 +45,5 @@ public class HUD {
     public void setLevel(int level) {
         this.level = level;
     }
+
 }

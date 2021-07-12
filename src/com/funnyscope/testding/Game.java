@@ -2,8 +2,8 @@ package com.funnyscope.testding;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.util.Random;
 import java.io.Serial;
+import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 
@@ -14,24 +14,30 @@ public class Game extends Canvas implements Runnable {
 
     private Thread thread;
     private GameStates gameState = GameStates.Stopped;
+    private boolean running = false;
 
-    private Handler handler;
-    private HUD hud;
-    private LevelRegulator spawn;
+    private final Handler handler;
+    private final HUD hud;
+    private final LevelRegulator spawn;
+    private final Menu menu;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public Game() {
         handler = new Handler();
         this.addKeyListener(new KeyInput(handler));
-        this.addMouseListener(new MouseListener(handler));
-        new Window(WIDTH, HEIGHT, "My First Game!!!1!", this);
+        menu = new Menu();
+        this.addMouseListener(new MouseListener(handler, this, menu));
 
         hud = new HUD();
-        spawn = new LevelRegulator(handler, hud);
+        spawn = new LevelRegulator(handler, hud, menu, this);
 
-        handler.addObject(new Player(30, 30, WIDTH / 2 - 15, HEIGHT / 2 - 15, handler, ID.Player));
-        handler.addObject(new BasicEnemy(20, 20, random.nextInt(WIDTH - 200) + 100, random.nextInt(HEIGHT - 200) + 100, handler, ID.BasicEnemy));
+
+        new Window(WIDTH, HEIGHT, "My First Game!!!1!", this);
+        if (gameState == GameStates.Running) {
+            handler.addObject(new Player(30, 30, WIDTH / 2 - 15, HEIGHT / 2 - 15, handler, ID.Player));
+            handler.addObject(new BasicEnemy(20, 20, random.nextInt(WIDTH - 200) + 100, random.nextInt(HEIGHT - 200) + 100, handler, ID.BasicEnemy));
+        }
     }
 
     public static void main(String[] args) {
@@ -47,29 +53,33 @@ public class Game extends Canvas implements Runnable {
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
-        //Why use an enum when you could use a boolean? Don't know. Doing it anyway.
-        while(gameState == GameStates.Running) {
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
-            while(delta >= 1) {
-                tick();
-                delta--;
+        try {
+            while (running) {
+                long now = System.nanoTime();
+                delta += (now - lastTime) / ns;
+                lastTime = now;
+                while (delta >= 1) {
+                    tick();
+                    delta--;
+                }
+                if (running)
+                    render();
+                frames++;
+                if (System.currentTimeMillis() - timer > 1000) {
+                    timer += 1000;
+                    //System.out.println("FPS: " + frames);
+                    frames = 0;
+                }
             }
-            if(gameState == GameStates.Running)
-                render();
-            frames++;
-            if(System.currentTimeMillis() - timer > 1000) {
-                timer += 1000;
-                System.out.println("FPS: " + frames);
-                frames = 0;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Something went wrong lmao fix it");
         }
     }
 
     private void render() {
         BufferStrategy bs = this.getBufferStrategy();
-        if(bs == null) {
+        if (bs == null) {
             this.createBufferStrategy(3);
             return;
         }
@@ -78,7 +88,10 @@ public class Game extends Canvas implements Runnable {
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
         handler.render(g);
-        hud.render(g);
+        if (gameState == GameStates.Running)
+            hud.render(g);
+        else
+            menu.render(g);
 
         g.dispose();
         bs.show();
@@ -86,27 +99,47 @@ public class Game extends Canvas implements Runnable {
 
     private void tick() {
         handler.tick();
-        hud.tick();
-        spawn.tick();
+        if (gameState == GameStates.Running) {
+            hud.tick();
+            spawn.tick();
+        }
     }
 
     public synchronized void start() {
         thread = new Thread(this);
         thread.start();
-        gameState = GameStates.Running;
+        //gameState = GameStates.Running;
+        running = true;
     }
+
     public synchronized void stop() {
         try {
             thread.join();
-            gameState = GameStates.Stopped;
+            //gameState = GameStates.Stopped;
+            running = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static int clamp(int var, int min, int max) {
-        if(var < min)
+        if (var < min)
             return min;
         else return Math.min(var, max);
+    }
+
+    //Because I was stupid enough to make most variables into integers, I now have to make a separate double clamp
+    //because I'm too lazy to typecast everything. Even typing this out takes less effort then that.
+    public static double doubleClamp(double var, double min, double max) {
+        if (var < min)
+            return min;
+        else return Math.min(var, max);
+    }
+
+    public GameStates getGameState() {
+        return gameState;
+    }
+    public void setGameState(GameStates gameState) {
+        this.gameState = gameState;
     }
 }

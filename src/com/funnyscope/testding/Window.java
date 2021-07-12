@@ -1,8 +1,8 @@
 package com.funnyscope.testding;
 
+import java.io.Serial;
 import javax.swing.*;
 import java.awt.*;
-import java.io.Serial;
 
 public class Window extends Canvas {
 
